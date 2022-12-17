@@ -1,0 +1,16 @@
+const express = require('express')
+const cors = require('cors')
+const helmet  = require('helmet')
+const dbConnection = require('./dbConfig')
+const app = express()
+app.use(cors())
+app.use(helmet())
+app.use(express.json({limit:"5mb" , extends:true}))
+app.use(express.urlencoded({limit:"5mb", extended:true}))
+dbConnection()
+const userRoute = require('./src/router/user.router')
+app.use('/', userRoute)
+const port = process.env.PORT
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`)
+})
